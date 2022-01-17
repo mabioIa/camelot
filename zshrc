@@ -1,10 +1,11 @@
 . ~/.linuxify
 
-export ZSH="/Users/m/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
-export PATH=".emacs.d/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
+COMPLETION_WAITING_DOTS="true"
 
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
@@ -16,7 +17,6 @@ export ARCHFLAGS="-arch ARM64"
 alias ls="lsd"
 export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
 
-## Git shortcuts
 alias a='git add'
 alias p='git push origin main'
 alias pu='git pull origin main'
@@ -44,24 +44,6 @@ alias gl='git log --stat -n30'
 alias clone="git clone"
 
 alias nig="npm install --global"
-# Commit everything or specified path
-c() {
-    opts="-s"
-    if [[ -f ".no_signoff" ]]; then
-        opts=""
-    fi;
-
-    if [[ "$1" == "-i" ]]; then
-        shift; git commit $opts --interactive $@
-    else
-        if [[ -n "$@" ]]; then
-            git commit $opts $@
-        else
-            git commit $opts -a
-        fi;
-    fi;
-}
-alias ci='c -i';
 
 # Show diff for a particular commit
 dn() {
@@ -88,13 +70,6 @@ mcd() { mkdir -p "$1" && eval cd "$1"; }
 ..4() { cd "../../../../$@"; }
 ..5() { cd "../../../../../$@"; }
 
-# Ls after CD
-cd() { if [[ -n "$1" ]]; then builtin cd "$1" && ls;
-                         else builtin cd && ls; fi; }
-,cd() { [[ -n "$1" ]] && builtin cd "$1" || builtin cd; }
-ca() { ,cd "$1"; ls -la; }
-cn() { ,cd "$1"; ls -a; }
-
 # Directory stack
 di() { dirs -v; }
 po() { if [[ -n "$1" ]]; then popd "$1" 1>/dev/null && ls;
@@ -109,11 +84,15 @@ export HISTIGNORE="cd:..*:no:na:clear:reset:j *:exit:hc:h:-"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias m="neomutt"
+
+# convert markdown to manpage groff
+
 mark() { 
   pandoc -s -f markdown -t man "$1" | groff -Tutf8 -man -Wall | less
 }
 
 # LESS termcap
+
 export LESS_TERMCAP_mb=$'\E[01;35m'
 export LESS_TERMCAP_md=$'\E[01;34m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -122,16 +101,14 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-export HOMEBREW_INSTALL_BADGE="⚡️"
-export INFURA_API_KEY=82e8bcc692bb4a91969669c1a2da0e45
-export ETH_RPC_URL=https://mainnet.infura.io/v3/82e8bcc692bb4a91969669c1a2da0e45
 export ETH_FROM=0x0000237A3D0AAD3CdA4D08707D2347605B9EaAAA
-export NVM_DIR="$HOME/.nvm"
+
+  export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 export PATH="/opt/homebrew/opt/ruby@2.7/bin:$PATH"
 
-alias icloud="/Users/m/Library/Mobile\ Documents/com\~apple\~CloudDocs/"
+alias icloud="$HOME/Library/Mobile\ Documents/com\~apple\~CloudDocs/"
 alias arx="arxiv-downloader --url"
-
-# todo - devtodo
+alias cpp="g++ -std=c++17 -Wall -Wextra -Wpedantic "
+alias c="gcc -Wall -Wextra -Wpedantic "
