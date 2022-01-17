@@ -1,12 +1,24 @@
 syntax on
 set ma
+set textwidth=79
 set mouse=a
 set cursorline
-set textwidth=79
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
+set autoindent
+
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+set hidden
+set showcmd
+set ttyfast
+set backspace=indent,eol,start
+
 set autoread
 set nobackup
 set nowritebackup
@@ -14,14 +26,33 @@ set noswapfile
 set nu
 set foldlevelstart=99
 set scrolloff=7
+
 " Use y and p with the system clipboard
 set clipboard=unnamedplus
+
+set complete-=i
+set omnifunc=syntaxcomplete#Complete
+
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+let g:netrw_altv=1
+let g:netrw_winsize=20
+let g:netrw_browse_split=4
 
 call plug#begin('~/.config/nvim/autoload/')
 Plug 'arzg/vim-colors-xcode'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
-" Plug 'neoclide/coc.nvim', {'branch': 'release'} # :CocInstall coc-clangd coc-tsserver coc-eslint coc-json coc-prettier coc-css coc-python coc-java
+" Pluig 'neoclide/coc.nvim', {'branch': 'release'} # :CocInstall coc-clangd coc-tsserver coc-eslint coc-json coc-prettier coc-css coc-python coc-java
 Plug 'sheerun/vim-polyglot'
+Plug 'alvan/vim-closetag'
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'dense-analysis/ale'
+Plug 'cloudhead/neovim-fuzzy'
+Plug 'danilo-augusto/vim-afterglow'
+Plug 'tmsvg/pear-tree'
+Plug 'jhawthorn/fzy'
+Plug 'tomlion/vim-solidity'
 Plug 'phaazon/hop.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/syntastic'
@@ -44,7 +75,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'jparise/vim-graphql'
 Plug 'mattn/emmet-vim'
-
 call plug#end()
 
 colorscheme xcodedarkhc
@@ -56,6 +86,7 @@ nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bf :bfirst<CR>
 nnoremap <leader>bl :blast<CR>
+nnoremap <C-p> :FuzzyOpen<CR>
 
 nnoremap ccd :CocList diagnostics<CR>
 
@@ -133,3 +164,14 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
+nnoremap <leader>p :Prettier<CR> :ALEFix<CR>
+
+let g:closetag_filenames = '*.html,*.js,*.jsx,*.tsx,*.njk,*.vue'
+let g:closetag_xhtml_filenames = '*.js,*.jsx,*.tsx'
+let g:closetag_filetypes = 'html,js,jsx,tsx,vue,njk'
+let g:closetag_xhtml_filetypes = 'js,jsx,tsx'
+let g:closetag_shortcut = '>'
